@@ -1,11 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { HYDRATE } from 'next-redux-wrapper';
-import admins from './adminReducer.ts'
-import basics from './basicReducer.ts'
-import boards from './boardReducer.ts'
-import games from './gameReducer.ts'
-import todos from './todoReducer.ts'
+import { HYDRATE } from 'next-redux-wrapper'
 import users from './userReducer.ts'
+
 
 const rootReducer = (state:any, action:any) => {
     if (action.type === HYDRATE) {
@@ -14,16 +10,9 @@ const rootReducer = (state:any, action:any) => {
           ...action.payload,
         };
       }
-      return combineReducers({
-        admins,
-        basics,
-        boards,
-        games,
-        todos,
+    return combineReducers({
         users
-      })(state, action)
+    })(state, action)
 }
-
 export default rootReducer
 export type RootState = ReturnType<typeof rootReducer>
-

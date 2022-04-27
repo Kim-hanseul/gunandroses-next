@@ -28,17 +28,21 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login(){
-    const handleChange = e =>{
-        e.preventDefault()
-        const{name, value} = e.target;
-        setUser({...user,[name]: value})
-    }
+export default function SignIn() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box 
+        <Box
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -50,27 +54,17 @@ export default function Login(){
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            로그인
+            Sign in
           </Typography>
-          
-          <Box component="form"  noValidate sx={{ mt: 1 }} onSubmit={
-            e => {
-                e.preventDefault()
-                dispatch(userActions.joinRequest(user))
-                setUser({
-                    userid:'', password:'', email:'', name:'', phone:'', birth:'', address:''
-                })
-            }
-        }>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="userid"
-              label="사용자ID"
-              name="userid"
+              id="email"
+              label="User Id"
+              name="email"
               autoComplete="email"
-              onChange={handleChange}
               autoFocus
             />
             <TextField
@@ -78,15 +72,14 @@ export default function Login(){
               required
               fullWidth
               name="password"
-              label="비밀번호"
+              label="Password"
               type="password"
               id="password"
-              onChange={handleChange}
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="로그인정보저장"
+              label="Remember me"
             />
             <Button
               type="submit"
@@ -94,7 +87,7 @@ export default function Login(){
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              전송
+              Sign In
             </Button>
             <Grid container>
               <Grid item xs>
@@ -109,11 +102,9 @@ export default function Login(){
               </Grid>
             </Grid>
           </Box>
-
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
-

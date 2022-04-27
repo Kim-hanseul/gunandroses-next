@@ -1,81 +1,165 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
+
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {styled} from '@mui/material/styles';
-import {purple} from '@mui/material/colors';
-
-const BootstrapButton = styled(Button)({
-    boxShadow: 'none',
-    textTransform: 'none',
-    fontSize: 16,
-    padding: '6px 12px',
-    border: '1px solid',
-    lineHeight: 1.5,
-    backgroundColor: '#0063cc',
-    borderColor: '#0063cc',
-    fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"'
-    ].join(','),
-    '&:hover': {
-        backgroundColor: '#0069d9',
-        borderColor: '#0062cc',
-        boxShadow: 'none'
-    },
-    '&:active': {
-        boxShadow: 'none',
-        backgroundColor: '#0062cc',
-        borderColor: '#005cbf'
-    },
-    '&:focus': {
-        boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)'
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Head from 'next/head';
+const theme = createTheme();
+export default function Join(){
+    const [user, setUser] =useState({
+        userid:'', password:'', email:'', name:'', phone:'', birth:'', address:''
+    })
+    const dispatch = useDispatch()
+    const handleChange = e =>{
+        e.preventDefault()
+        const{name, value} = e.target;
+        setUser({...user,[name]: value})
     }
-});
-const ColorButton = styled(Button)(({theme}) => ({
-    color: theme
-        .palette
-        .getContrastText(purple[500]),
-    backgroundColor: purple[500],
-    '&:hover': {
-        backgroundColor: purple[700]
-    }
-}));
-
-export default function MaterialUIPickers() {
-    const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-
-    const handleChange = (newValue) => {
-        setValue(newValue);
-    };
-
-    return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Stack spacing={3}>
-                <TextField id="outlined-basic" label="USERID"/>
-                <TextField id="outlined-basic-2" label="PASSWORD"/>
-                <TextField id="outlined-basic-2" label="EMAIL"/>
-                <TextField id="outlined-basic-2" label="NAME"/>
-                <TextField id="outlined-basic-2" label="PHONE"/>
-                <TextField id="outlined-basic-2" label="BIRTH"/>
-                <TextField id="outlined-basic-2" label="ADDRESS"/>
-            </Stack>
-            <Stack spacing={2} direction="row" style={{marginTop:"20px", float: "right"}}>
-                <ColorButton variant="contained" style={{width:"100px"}}>SIGN UP</ColorButton>
-                <BootstrapButton variant="contained" disableRipple="disableRipple" style={{width:"100px"}}>
-                    CANCEL
-                </BootstrapButton>
-            </Stack>
-        </LocalizationProvider>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+    <Head>
+    <title>사용자| 회원가입</title>
+    </Head>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            회원가입
+          </Typography>
+          <Box component="form" noValidate onSubmit={
+            e => {
+                e.preventDefault()
+                dispatch(userActions.joinRequest(user))
+                setUser({
+                    userid:'', password:'', email:'', name:'', phone:'', birth:'', address:''
+                })
+            }
+        } sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} >
+                <TextField
+                  autoComplete="given-name"
+                  name="userid"
+                  required
+                  fullWidth
+                  id="userid"
+                  label="사용자ID"
+                  autoFocus
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="이 름"
+                  name="name"
+                  autoComplete="family-name"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="phone"
+                  label="전화번호"
+                  type="text"
+                  id="phone"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="birth"
+                  label="생년월일"
+                  type="text"
+                  id="birth"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="address"
+                  label="주소"
+                  type="text"
+                  id="address"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              전 송
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/user/login" variant="body2">
+                  로그인 화면으로 전환
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
 }
